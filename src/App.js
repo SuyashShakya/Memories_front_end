@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import {useDispatch} from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react'
 
-function App() {
+import { getPosts } from './actions';
+import AppBar from './components/AppBar';
+import Posts from './pages/Posts';
+import NewPost from './pages/NewPost';
+
+
+const App = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getPosts());;
+  }, [dispatch])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ChakraProvider>
+      <Router>
+      <AppBar />
+        <Switch>
+          <Route exact path='/'>
+            <Posts />
+          </Route>
+          <Route exact path='/new-post'>
+            <NewPost />
+          </Route>
+        </Switch>    
+      </Router>
+    </ChakraProvider>
+    )
+  
 }
 
 export default App;

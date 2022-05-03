@@ -2,14 +2,20 @@ import * as React from 'react';
 import { Container, Text, Input, Textarea, Button } from '@chakra-ui/react'
 import FileBase from 'react-file-base64';
 import { useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { createPost } from '../actions';
+
 
 const NewPost = () => {
     const [selectedFile, setSelectedFile] = React.useState('');
     const [tags, setTags] = React.useState('');
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
+    const dispatch = useDispatch();
+    
     const onSubmit = (data) => {
-        const dataToBeSent={...data, selectedFile, tags: tags.split(',')}
-        console.log('data', dataToBeSent);
+        const postData={...data, selectedFile, tags: tags.split(',')}
+        dispatch(createPost(postData))
+        reset();
     }    
 
     return (
@@ -29,7 +35,7 @@ const NewPost = () => {
                 <FileBase type="file" multiple={false} onDone={({ base64 }) => setSelectedFile(base64)} />
                 <br /> <br />
                 <Button type='submit' colorScheme='blue' mr={3}>Submit</Button>
-                <Button colorScheme='red'>Reset</Button>
+                <Button colorScheme='red' onClick={() => reset()}>Reset</Button>
             </form>
         </Container>
     )

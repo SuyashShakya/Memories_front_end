@@ -7,6 +7,9 @@ const AppBar = () => {
     const onCreateNewPost = () => {
         history.push('/new-post')
     }
+    console.log('window', window.location.pathname)
+    
+    console.log('history', history?.location?.pathname)
     return (
         <Box 
             px={5} 
